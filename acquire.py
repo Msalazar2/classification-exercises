@@ -92,4 +92,25 @@ def get_telco_data():
         return telco
     
     
+def train_val_test(df, strat, seed = 42):
+
+    train, val_test = train_test_split(df, train_size = 0.7,
+                                       random_state = seed,
+                                       stratify = df[strat])
     
+    val, test = train_test_split(val_test, train_size = 0.5,
+                                 random_state = seed,
+                                 stratify = val_test[strat])
+    
+    return train, val, test
+
+
+def eval_p(p, alpha = .05):
+    
+    if p < alpha:
+    
+        print(f'the result is significant we reject the null hypothesis with a p_value of {round(p, 2)}.')
+    
+    else:
+        
+        print(f'we fail to reject the null hypothesis with a p_value of {round(p, 2)}.')
