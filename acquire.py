@@ -4,6 +4,7 @@ import pandas as pd
 
 from env import get_connection
 
+from sklearn.model_selection import train_test_split
 
 def get_titanic_data():
     
@@ -114,3 +115,10 @@ def eval_p(p, alpha = .05):
     else:
         
         print(f'we fail to reject the null hypothesis with a p_value of {round(p, 2)}.')
+        
+        
+def prep_titanic(df):
+    
+    df = df.drop(columns = ['passenger_id', 'pclass', 'embarked'])
+    
+    return df
