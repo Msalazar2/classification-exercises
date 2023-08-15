@@ -1,12 +1,12 @@
 import pandas as pd
 
 from sklearn.model_selection import train_test_split
-from acquire import get_titanic_data
+from adam_acquire import get_titanic
 
 
 def drop_cols(df):
     
-    return df.drop(columns = ['pclass', 'passenger_id', 'embarked'])
+    return df.drop(columns = ['pclass', 'passenger_id', 'embarked', 'deck'])
 
 
 def train_val_test(df, strat, seed = 42):
@@ -39,14 +39,29 @@ def impute_vals(train, val, test):
     return train, val, test
 
 
+def dummies(df):
+
+    df = pd.get_dummies(df, columns = ['sex'], drop_first = True)
+    
+    df = pd.get_dummies(df)
+    
+    return df
+    
+
 def titanic_pipeline():
     
-    df = get_titanic_data()
+    df = get_titanic()
     
     df = drop_cols(df)
     
     train, val, test = train_val_test(df, 'survived')
     
     train, val, test = impute_vals(train, val, test)
+    
+    train = dummies(train)
+    
+    val = dummies(val)
+    
+    test = dummies(test)
     
     return train, val, test
